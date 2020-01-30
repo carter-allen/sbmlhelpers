@@ -3,12 +3,13 @@
 #' Function to plot data graph along with inferred cluster labels
 #' @param fit A model object obtained with sbmlogit.mcmc()
 #' @param ground An optional parameter specifying the variable name of the ground truth cluster labels in the original igraph data object
+#' @param alpha Transparency of the edge color
 #' @keywords SBM
 #' @export
 #' @examples
 #' plot_sbmlogit(fitK2)
 
-plot_sbmlogit <- function(fit, ground = NULL)
+plot_sbmlogit <- function(fit, ground = NULL, alpha = 0.5)
 {
     # make sure graph is an igraph object
     if(class(fit$graph) != "igraph")
@@ -36,7 +37,7 @@ plot_sbmlogit <- function(fit, ground = NULL)
                 mutate(sig = sigma)
 
             p = ggraph(graph,layout = "kk") +
-                geom_edge_link(alpha = 0.5) +
+                geom_edge_link(alpha = alpha) +
                 geom_node_point(aes(color = sig),
                                 size = 5) +
                 theme_void()
@@ -56,7 +57,7 @@ plot_sbmlogit <- function(fit, ground = NULL)
                        true = as.factor(ground))
 
             p = ggraph(graph,layout = "kk") +
-                geom_edge_link(alpha = 0.5) +
+                geom_edge_link(alpha = alpha) +
                 geom_node_point(aes(color = sig,
                                     shape = true),
                                 size = 5) +
@@ -72,7 +73,7 @@ plot_sbmlogit <- function(fit, ground = NULL)
             mutate(sig = sigma)
 
         p = ggraph(graph,layout = "kk") +
-            geom_edge_link(alpha = 0.5) +
+            geom_edge_link(alpha = alpha) +
             geom_node_point(aes(color = sig),
                             size = 5) +
             theme_void()

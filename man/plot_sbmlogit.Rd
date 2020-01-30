@@ -4,12 +4,14 @@
 \alias{plot_sbmlogit}
 \title{The plot_sbmlogit function}
 \usage{
-plot_sbmlogit(fit, ground = NULL)
+plot_sbmlogit(fit, ground = NULL, alpha = 0.5)
 }
 \arguments{
 \item{fit}{A model object obtained with sbmlogit.mcmc()}
 
 \item{ground}{An optional parameter specifying the variable name of the ground truth cluster labels in the original igraph data object}
+
+\item{alpha}{Transparency of the edge color}
 }
 \description{
 Function to plot data graph along with inferred cluster labels
