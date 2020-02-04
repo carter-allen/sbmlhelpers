@@ -9,7 +9,7 @@
 #' @examples
 #' plot_sbmlogit(fitK2)
 
-plot_sbmlogit <- function(fit, ground = NULL)
+plot_sbmlogit <- function(fit, ground = NULL, alpha = 0.50)
 {
     # make sure graph is an igraph object
     if(class(fit$graph) != "igraph")
@@ -41,7 +41,8 @@ plot_sbmlogit <- function(fit, ground = NULL)
             p = ggraph(graph,layout = "kk") +
                 geom_edge_link(alpha = 0.5) +
                 geom_node_point(aes(color = sig,
-                                    size = eta)) +
+                                    size = eta),
+                                alpha = alpha) +
                 geom_node_text(aes(label = id),
                                size = 3) +
                 theme_void()
@@ -66,7 +67,8 @@ plot_sbmlogit <- function(fit, ground = NULL)
                 geom_edge_link(alpha = 0.5) +
                 geom_node_point(aes(color = sig,
                                     shape = true,
-                                    size = eta)) +
+                                    size = eta),
+                                alpha = alpha) +
                 geom_node_text(aes(label = id),
                                size = 3) +
                 theme_void()
@@ -85,7 +87,8 @@ plot_sbmlogit <- function(fit, ground = NULL)
         p = ggraph(graph,layout = "kk") +
             geom_edge_link(alpha = 0.5) +
             geom_node_point(aes(color = sig,
-                                size = eta)) +
+                                size = eta),
+                            alpha = alpha) +
             geom_node_text(aes(label = id),
                            size = 3) +
             theme_void()
