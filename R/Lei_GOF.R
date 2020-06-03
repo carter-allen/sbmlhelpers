@@ -77,5 +77,13 @@ Lei_GOF <- function(A,z,alpha = 0.05)
 
   ret <- c(Tz,T_crit)
   names(ret) <- c("Test Statistic","Critical Value")
+  if(Tz > T_crit)
+  {
+    message("Lei's GOF null hypothesis was rejected. Increment K0 by 1.")
+  }
+  else
+  {
+    message("Failed to reject Lei's GOF null hypothesis.")
+  }
   return(ret)
 }
