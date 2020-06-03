@@ -1,0 +1,81 @@
+#' Implement Lei's goodness of fit test
+#'
+#' Function to test the fit of a putative stochastic block model labeling
+#' using Lei's goodness of fit test (Lei, 2016)
+#' @param A A symmetric adjacency matrix with entries of 0 or 1
+#' @param z A putative cluster labeling vector. The number of entries should equal the row and column dimension of A.
+#' @param alpha The significance level of the goodness of fit test
+#' @keywords SBM, Lei's goodness of fit test
+#' @export
+#' @examples
+#' Lei_GOF(A,z)
+Lei_GOF <- function(A,z,alpha = 0.05)
+{
+  Ns = table(z) # Number in each cluster
+  K0 = length(unique(z)) # putative number of clusters
+  B <- matrix(0,nrow = K0,ncol = K0) # empty B matrix
+  ids <- 1:n # node id vector
+  for(k in 1:K0)
+  {
+    for(l in k:K0)
+    {
+      # inter-community connections
+      if(k != l)
+      {
+        nk = Ns[k]
+        nl = Ns[l]
+        is = ids[z == k]
+        js = ids[z == l]
+        b = 0
+        for(i in is)
+        {
+          for(j in js)
+          {
+            b = b + A[i,j]
+          }
+        }
+        B[k,l] = B[l,k] = b/(nk*nl)
+      }
+      # intra-community connections
+      else
+      {
+        nk = Ns[k]
+        is = ids[z == k]
+        b = 0
+        for(i in 1:length(is))
+        {
+          for(j in i:length(is))
+          {
+            b = b + A[is[i],is[j]]
+          }
+        }
+        B[k,l] = B[l,k] = b/((nk*(nk-1))/2)
+      }
+    }
+  }
+
+  Az = A
+  for(i in 1:ncol(A))
+  {
+    for(j in 1:nrow(A))
+    {
+      if(i == j)
+      {
+        A[i,j] = 0
+      }
+      else
+      {
+        Az[i,j] = (A[i,j] - B[z[i],z[j]])/(sqrt((n-1)*B[z[i],z[j]]*(1-B[z[i],z[j]])))
+      }
+    }
+  }
+  Sz = svd(Az)
+  sz = max(Sz$d)
+  Tz = (n^(2/3))*(sz-2)
+
+  T_crit = RMTstat::qtw(1-(alpha/2))
+
+  ret <- c(Tz,T_crit)
+  names(ret) <- c("Test Statistic","Critical Value")
+  return(ret)
+}
