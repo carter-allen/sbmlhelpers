@@ -3,14 +3,13 @@
 #' Function to plot data graph along with inferred cluster labels
 #' @param fit A model object obtained with sbmlogit.mcmc()
 #' @param ground An optional parameter specifying the variable name of the ground truth cluster labels in the original igraph data object
-#' @param labels An optional parameter specifying the labels of each node to be used. If NULL, each node will be given a unique id label.
 #' @param alpha Transparency of the edge color
 #' @keywords SBM
 #' @export
 #' @examples
 #' plot_sbmlogit(fitK2)
 
-plot_sbmlogit <- function(fit, ground = NULL, labels = NULL, alpha = 0.50)
+plot_sbmlogit <- function(fit, ground = NULL, alpha = 0.50)
 {
     # make sure graph is an igraph object
     if(class(fit$graph) != "igraph")
@@ -37,9 +36,7 @@ plot_sbmlogit <- function(fit, ground = NULL, labels = NULL, alpha = 0.50)
                 activate(nodes) %>%
                 mutate(sig = sigma,
                        eta = colMeans(fit$eta),
-                       id = ifelse(is.null(labels),
-                                   as.numeric(V(fit$graph)),
-                                   labels))
+                       id = as.numeric(V(fit$graph)))
 
             p = ggraph(graph,layout = "kk") +
                 geom_edge_link(alpha = 0.5) +
@@ -64,9 +61,7 @@ plot_sbmlogit <- function(fit, ground = NULL, labels = NULL, alpha = 0.50)
                 mutate(sig = sigma,
                        true = as.factor(ground),
                        eta = colMeans(fit$eta),
-                       id = ifelse(is.null(labels),
-                                   as.numeric(V(fit$graph)),
-                                   labels))
+                       id = as.numeric(V(fit$graph)))
 
             p = ggraph(graph,layout = "kk") +
                 geom_edge_link(alpha = 0.5) +
@@ -87,9 +82,7 @@ plot_sbmlogit <- function(fit, ground = NULL, labels = NULL, alpha = 0.50)
             activate(nodes) %>%
             mutate(sig = sigma,
                    eta = colMeans(fit$eta),
-                   id = ifelse(is.null(labels),
-                                    as.numeric(V(fit$graph)),
-                                    labels))
+                   id = as.numeric(V(fit$graph)))
 
         p = ggraph(graph,layout = "kk") +
             geom_edge_link(alpha = 0.5) +
