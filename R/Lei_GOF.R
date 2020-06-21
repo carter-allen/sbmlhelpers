@@ -11,6 +11,7 @@
 #' Lei_GOF(A,z)
 Lei_GOF <- function(A,z,alpha = 0.05)
 {
+  n = length(z)
   Ns = table(z) # Number in each cluster
   K0 = length(unique(z)) # putative number of clusters
   B <- matrix(0,nrow = K0,ncol = K0) # empty B matrix
@@ -73,17 +74,9 @@ Lei_GOF <- function(A,z,alpha = 0.05)
   sz = max(Sz$d)
   Tz = (n^(2/3))*(sz-2)
 
-  T_crit = RMTstat::qtw(1-(alpha/2))
+  T_crit = qtw(1-(alpha/2))
 
   ret <- c(Tz,T_crit)
   names(ret) <- c("Test Statistic","Critical Value")
-  if(Tz > T_crit)
-  {
-    message("Lei's GOF null hypothesis was rejected. Increment K0 by 1.")
-  }
-  else
-  {
-    message("Failed to reject Lei's GOF null hypothesis.")
-  }
   return(ret)
 }
